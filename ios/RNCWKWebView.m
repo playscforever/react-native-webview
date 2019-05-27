@@ -208,6 +208,8 @@ static NSURLCredential* clientAuthenticationCredential;
       }
     }
 
+// add access to local files
+    [wkWebViewConfig.preferences setValue:@YES forKey:@"allowFileAccessFromFileURLs"];
     _webView = [[WKWebView alloc] initWithFrame:self.bounds configuration: wkWebViewConfig];
     _webView.scrollView.delegate = self;
     _webView.UIDelegate = self;
@@ -398,7 +400,10 @@ static NSURLCredential* clientAuthenticationCredential;
         [_webView loadRequest:request];
     }
     else {
-        [_webView loadFileURL:request.URL allowingReadAccessToURL:request.URL];
+        NSURL* filePath=[[NSBundle mainBundle] URLForResource:@"index" withExtension:@"html"];
+        [_webView loadFileURL:filePath allowingReadAccessToURL:filePath];
+//        origin here
+//        [_webView loadFileURL:request.URL allowingReadAccessToURL:request.URL];
     }
 }
 
